@@ -5,7 +5,8 @@ const initialState = {
   user: [],
   status: 'idle',
   error: null,
-  successMessage: null,
+  successMessage: '',
+  message: '',
 };
 //User Register Thunk
 export const registerUser = createAsyncThunk(
@@ -32,14 +33,27 @@ export const loginUser = createAsyncThunk(
   }
 );
 //password reset email send Thunk
-export const SendResetPasswordEmail = createAsyncThunk(
-  'users/SendResetPasswordEmail',
-  async (email, thunkAPI) => {
+export const sendResetPasswordEmail = createAsyncThunk(
+  'users/sendResetPasswordEmail',
+  async (email, { rejectWithValue }) => {
     try {
       const response = await service.sendResetPasswordEmail(email);
-      return response;
+      return response.data; 
     } catch (error) {
-      return thunkAPI.rejectWithValue(error.response.data); 
+      const message = error.response?.data?.message || 'Failed to send reset password email';
+      return rejectWithValue(message);
+    }
+  }
+);
+//reset password Thunk
+export const resetPassword = createAsyncThunk(
+  'user/resetPassword',
+  async ({ token, password }, { rejectWithValue }) => {
+    try {
+      const response = await service.resetPassword(token, password);
+      return response.data; 
+    } catch (error) {
+      return rejectWithValue(error.response.data.message || 'Failed to reset password');
     }
   }
 );
@@ -76,12 +90,29 @@ const userSlice = createSlice({
         state.status = 'failed';
         state.error = action.payload;
       })
-      .addCase(SendResetPasswordEmail.fulfilled, (state, action) => {
-        state.successMessage = action.payload.message;
+      .addCase(sendResetPasswordEmail.pending, (state) => {
+        state.isLoading = true;
+        state.successMessage = '';
         state.error = null;
       })
-      .addCase(SendResetPasswordEmail.rejected, (state, action) => {
-        state.error = action.payload.message;
+      .addCase(sendResetPasswordEmail.fulfilled, (state) => {
+        state.isLoading = false;
+        state.successMessage = 'Reset password email sent successfully!';
+      })
+      .addCase(sendResetPasswordEmail.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload || 'Failed to send reset password email.';
+      })
+      .addCase(resetPassword.pending, (state) => {
+        state.status = 'loading';
+      })
+      .addCase(resetPassword.fulfilled, (state, action) => {
+        state.status = 'succeeded';
+        state.message = action.payload;
+      })
+      .addCase(resetPassword.rejected, (state, action) => {
+        state.status = 'failed';
+        state.error = action.payload;
       });
   },
 });

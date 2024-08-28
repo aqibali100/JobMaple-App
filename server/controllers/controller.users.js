@@ -1,4 +1,4 @@
-const { RegisterUser, LoginUser, sendResetPasswordEmail } = require('../services/service.users');
+const { RegisterUser, LoginUser, sendResetPasswordEmail, findUserByToken, resetPassword } = require('../services/service.users');
 //Register User Controller
 const registerUser = async (req, res) => {
     try {
@@ -41,20 +41,31 @@ const passwordResetEmail = async (req, res) => {
         const response = await sendResetPasswordEmail(email);
         res.status(200).json(response);
     } catch (error) {
-        if (error.message === 'This email is not registered!') {
-            res.status(404).json({
-                message: error.message,
-            });
-        } else {
-            res.status(500).json({
-                message: 'An error occurred while processing your request. Please try again later.',
-            });
-        }
+        res.status(400).json({
+            message: error.message,
+        });
     }
 };
+//reset password Controller
+const ResetPassword = async (req, res) => {
+    try {
+        const token = req.params.token;
+        const { password } = req.body;
+        const user = await findUserByToken(token);
+        if (!user) {
+            return res.status(400).send('Password reset token is invalid or has expired.');
+        }
+        await resetPassword(user, password);
+        res.send('Your password has been successfully reset.');
+    } catch (error) {
+        console.error('Error in reset password controller:', error);
+        res.status(500).send('Internal Server Error');
+    }
+}
 
 module.exports = {
     registerUser,
     loginUser,
     passwordResetEmail,
+    ResetPassword,
 };

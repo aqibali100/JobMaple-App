@@ -1,46 +1,44 @@
 import React, { useState } from 'react';
 import '../../assets/style/style.css';
-import { useNavigate } from 'react-router-dom';
 import waveImg from "../../assets/images/wave.png";
 import bgImg from "../../assets/images/bg.png";
 import avatarImg from "../../assets/images/Logo.png";
 import { useFormik } from 'formik';
 import { toast } from 'react-toastify';
-import validationSchema from '../validation/auth/Login';
-import { SendResetPasswordEmail} from '../../reducers/UserSlice';
+import {sendResetPasswordEmail } from '../../reducers/UserSlice';
 import { useDispatch } from 'react-redux';
 import '@fortawesome/fontawesome-free/css/all.min.css';
+import Loading from '../loading/Loading';
+import { ForgetPasswordSchema } from '../validation/Validaton';
 
 
 
 const ForgetPassword = () => {
-    const navigate = useNavigate();
+    const [loading, setLoading] = useState(false);
     const dispatch = useDispatch();
     const formik = useFormik({
         initialValues: {
             email: '',
         },
-        validationSchema: validationSchema,
-        onSubmit: async (values, { resetForm, setSubmitting, setErrors }) => {
-            setSubmitting(true);
+        validationSchema: ForgetPasswordSchema,
+        onSubmit: async (values, { resetForm }) => {
+            setLoading(true);
             try {
-                await dispatch(SendResetPasswordEmail(values.email)).unwrap();
-                toast.success('Password Reset Email sent Successfully!');
+                await dispatch(sendResetPasswordEmail(values)).unwrap();
                 resetForm();
-                // navigate('/');
+                toast.success('Email sent successfully!');
             } catch (error) {
-                if (error?.message === 'This Email is not Registered!') {
-                    toast.error('This Email is not Registered!');
-                } else if (error?.message === 'Your Password is Incorrect!') {
-                    toast.error('Your Password is Incorrect!');
-                } else {
-                    setErrors({ form: 'Password reset failed. Please try again.' });
+                if (error === 'User with given email does not exist') {
+                    toast.error('This Email is not Found!');
                 }
             } finally {
-                setSubmitting(false);
+                setLoading(false);
             }
         },
+
     });
+
+
     return (
         <div>
             <img className="wave" src={waveImg} alt="Wave-Background" />
@@ -72,7 +70,9 @@ const ForgetPassword = () => {
                         {formik.touched.email && formik.errors.email ? (
                             <div className="error">{formik.errors.email}</div>
                         ) : null}
-                        <input className='btn' type="submit" value="Send Email" />
+                         <button className='btn' type="submit" disabled={loading}>
+                            {loading ? <Loading/>  : 'Send Email'}
+                        </button>
                     </form>
                 </div>
             </div>

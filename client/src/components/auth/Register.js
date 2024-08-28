@@ -4,21 +4,21 @@ import waveImg from "../../assets/images/wave.png";
 import bgImg from "../../assets/images/bg.png";
 import avatarImg from "../../assets/images/Logo.png";
 import { useFormik } from 'formik';
-import { Link, useNavigate} from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import validationSchema from '../validation/auth/Register';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch} from 'react-redux';
 import { registerUser } from '../../reducers/UserSlice';
 import '@fortawesome/fontawesome-free/css/all.min.css';
+import Loading from '../loading/Loading';
+import { RegistrationSchema } from '../validation/Validaton';
 
 
 const Register = () => {
+    const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    const containerRef = useRef(null);
-    const user = useSelector(state => state.user);
     const [showPassword, setShowPassword] = useState(false);
     const togglePasswordVisibility = () => {
         setShowPassword((prevState) => !prevState);
@@ -30,8 +30,9 @@ const Register = () => {
             password: '',
             phone: '',
         },
-        validationSchema: validationSchema,
-        onSubmit: async (values, { resetForm, setSubmitting, setErrors }) => {
+        validationSchema: RegistrationSchema,
+        onSubmit: async (values, { resetForm, setErrors }) => {
+            setLoading(true);
             try {
                 await dispatch(registerUser({
                     name: values.name,
@@ -49,7 +50,7 @@ const Register = () => {
                     setErrors({ form: 'Registration failed. Please try again.' });
                 }
             } finally {
-                setSubmitting(false);
+                setLoading(false);
             }
         },
     });
@@ -150,7 +151,9 @@ const Register = () => {
                         {formik.touched.phone && formik.errors.phone ? (
                             <div className="error-message">{formik.errors.phone}</div>
                         ) : null}
-                        <input className='btn' type="submit" value="Sign Up" />
+                        <button className='btn' type="submit" disabled={loading}>
+                            {loading ? <Loading /> : 'Sign Up'}
+                        </button>
                         <div className='account'>
                             Already have an account?   <Link to="/"> Login</Link>
                         </div>

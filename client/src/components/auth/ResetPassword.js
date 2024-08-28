@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import '../../assets/style/style.css';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import waveImg from "../../assets/images/wave.png";
 import bgImg from "../../assets/images/bg.png";
 import avatarImg from "../../assets/images/Logo.png";
@@ -8,14 +8,15 @@ import { useFormik } from 'formik';
 import { toast } from 'react-toastify';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import validationSchema from '../validation/auth/Login';
-import { loginUser } from '../../reducers/UserSlice';
+import { resetPassword } from '../../reducers/UserSlice';
 import { useDispatch } from 'react-redux';
 import '@fortawesome/fontawesome-free/css/all.min.css';
+import { ResretPasswordSchema } from '../validation/Validaton';
 
 
 
 const ResetPassword = () => {
+    const { token } = useParams();
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const [showPassword, setShowPassword] = useState(false);
@@ -26,27 +27,21 @@ const ResetPassword = () => {
         initialValues: {
             password: '',
         },
-        validationSchema: validationSchema,
+        validationSchema: ResretPasswordSchema,
         onSubmit: async (values, { resetForm, setSubmitting, setErrors }) => {
             try {
-                await dispatch(loginUser(values)).unwrap();
+                const res = await dispatch(resetPassword({ token, password: values.password })).unwrap();
                 resetForm();
-                toast.success('Login successful!');
-                // navigate('/');
+                toast.success('Password reset successful!');
+                navigate('/');
             } catch (error) {
-                if (error?.message === 'This Email is not Registered!') {
-                    toast.error('This Email is not Registered!');
-                } else if (error?.message === 'Your Password is Incorrect!') {
-                    toast.error('Your Password is Incorrect!');
-                } else {
-                    setErrors({ form: 'Login failed. Please try again.' });
-                }
+                toast.error('Password reset token is invalid or has expired.');
             } finally {
                 setSubmitting(false);
             }
         },
-
     });
+
 
 
     return (

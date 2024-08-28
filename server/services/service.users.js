@@ -1,6 +1,8 @@
 const bcrypt = require('bcryptjs');
 const User = require('../models/model.users');
 const jwt = require('jsonwebtoken');
+const nodemailer = require('nodemailer');
+const crypto = require('crypto');
 
 //Register User
 const RegisterUser = async (userData) => {
@@ -37,16 +39,14 @@ const sendResetPasswordEmail = async (email) => {
     try {
         const user = await User.findOne({ email });
         if (!user) {
-            throw new Error('This Email is not Registered!');
+            throw new Error('User with given email does not exist');
         }
-        const resetToken = jwt.sign(
-            { id: user._id, email: user.email },
-            process.env.JWT_SECRET,
-            { expiresIn: '1h' }
-        );
-        const resetURL = `http://localhost:3000/reset-password?token=${resetToken}`;
+        const token = crypto.randomBytes(20).toString('hex');
+        user.resetPasswordToken = token;
+        user.resetPasswordExpires = Date.now() + 3600000;
+        await user.save();
         const transporter = nodemailer.createTransport({
-            service: 'Gmail',
+            service: 'gmail',
             auth: {
                 user: process.env.EMAIL_USER,
                 pass: process.env.EMAIL_PASS,
@@ -54,20 +54,43 @@ const sendResetPasswordEmail = async (email) => {
         });
         const mailOptions = {
             from: process.env.EMAIL_USER,
-            to: email,
-            subject: 'Password Reset Request',
-            html: `<p>You requested a password reset. Click <a href="${resetURL}">here</a> to reset your password. The link will expire in one hour.</p>`,
+            to: user.email,
+            subject: 'Password Reset',
+            text: `Click the following link to reset your password: http://localhost:3000/reset-password/${token}`,
         };
-
-        // Send email
-        await transporter.sendMail(mailOptions);
-        return { message: 'Password reset email sent successfully!' };
+        return new Promise((resolve, reject) => {
+            transporter.sendMail(mailOptions, (err, response) => {
+                if (err) {
+                    console.error('Error sending email:', err);
+                    reject(err);
+                } else {
+                    resolve('Recovery email sent');
+                }
+            });
+        });
     } catch (error) {
-        throw new Error(error.message);
+        console.error('Error in forgot password service:', error);
+        throw error;
     }
+};
+//Reset password
+const findUserByToken = async (token) => {
+    return User.findOne({
+        resetPasswordToken: token,
+        resetPasswordExpires: { $gt: Date.now() }
+    });
+};
+const resetPassword = async (user, newPassword) => {
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+    user.password = hashedPassword;
+    user.resetPasswordToken = undefined;
+    user.resetPasswordExpires = undefined;
+    await user.save();
 };
 module.exports = {
     RegisterUser,
     LoginUser,
     sendResetPasswordEmail,
+    findUserByToken,
+    resetPassword,
 };

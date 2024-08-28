@@ -8,10 +8,12 @@ import { useFormik } from 'formik';
 import { toast } from 'react-toastify';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import validationSchema from '../validation/auth/Login';
 import { loginUser } from '../../reducers/UserSlice';
 import { useDispatch } from 'react-redux';
 import '@fortawesome/fontawesome-free/css/all.min.css';
+import Loading from '../loading/Loading';
+import { LoginSchema } from '../validation/Validaton';
+
 
 
 
@@ -19,6 +21,7 @@ const Login = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const [showPassword, setShowPassword] = useState(false);
+    const [loading, setLoading] = useState(false);
     const togglePasswordVisibility = () => {
         setShowPassword((prevState) => !prevState);
     };
@@ -27,8 +30,9 @@ const Login = () => {
             email: '',
             password: '',
         },
-        validationSchema: validationSchema,
+        validationSchema: LoginSchema,
         onSubmit: async (values, { resetForm, setSubmitting, setErrors }) => {
+            setLoading(true);
             try {
                 await dispatch(loginUser(values)).unwrap();
                 resetForm();
@@ -43,7 +47,7 @@ const Login = () => {
                     setErrors({ form: 'Login failed. Please try again.' });
                 }
             } finally {
-                setSubmitting(false);
+                setLoading(false);
             }
         },
 
@@ -112,7 +116,9 @@ const Login = () => {
                                 <Link to="/forget-password">Forget Password?</Link>
                             </div>
                         </div>
-                        <input className='btn' type="submit" value="Login" />
+                        <button className='btn' type="submit" disabled={loading}>
+                            {loading ? <Loading/>  : 'Login'}
+                        </button>
                         <div className='account'>
                             Create an account?    <Link to="/register"> Sign Up</Link>
                         </div>
