@@ -8,6 +8,7 @@ import Navbar from './components/layout/Navbar';
 import ForgetPassword from './components/auth/ForgetPassword';
 import ResetPassword from './components/auth/ResetPassword';
 import JobPostForm from './components/form/JobPostForm';
+import RoleSelection from './components/role/RoleSelection';
 
 
 function App() {
@@ -22,6 +23,7 @@ function App() {
           <Route path="/forget-password" element={<ForgetPassword />} />
           <Route path="/reset-password/:token" element={<ResetPassword />} />
           <Route path="/job-post-form" element={<JobPostForm />} />
+          <Route path="/role-selection" element={<RoleSelection />} />
         </Routes>
       </div>
       <ToastContainer />
