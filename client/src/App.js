@@ -9,6 +9,7 @@ import ForgetPassword from './components/auth/ForgetPassword';
 import ResetPassword from './components/auth/ResetPassword';
 import JobPostForm from './components/form/JobPostForm';
 import RoleSelection from './components/role/RoleSelection';
+import Footer from './components/layout/Footer';
 
 
 function App() {
@@ -25,6 +26,7 @@ function App() {
           <Route path="/job-post-form" element={<JobPostForm />} />
           <Route path="/role-selection" element={<RoleSelection />} />
         </Routes>
+        <Footer />
       </div>
       <ToastContainer />
     </>

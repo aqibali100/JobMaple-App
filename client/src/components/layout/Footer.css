@@ -1,0 +1,19 @@
+.footer-bg {
+    background: #e3d8d854;
+    padding: 10px 20px;
+    width: 100%;
+    position: fixed;
+    bottom: 0;
+}
+
+.footer {
+    text-align: center;
+}
+
+.footer p {
+    margin: 0px;
+}
+
+.footer span {
+    color: #17B8FC;
+}
