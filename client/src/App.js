@@ -7,6 +7,7 @@ import { ToastContainer } from 'react-toastify';
 import Navbar from './components/layout/Navbar';
 import ForgetPassword from './components/auth/ForgetPassword';
 import ResetPassword from './components/auth/ResetPassword';
+import JobPostForm from './components/form/JobPostForm';
 
 
 function App() {
@@ -20,6 +21,7 @@ function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/forget-password" element={<ForgetPassword />} />
           <Route path="/reset-password/:token" element={<ResetPassword />} />
+          <Route path="/job-post-form" element={<JobPostForm />} />
         </Routes>
       </div>
       <ToastContainer />

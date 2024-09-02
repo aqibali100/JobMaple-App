@@ -43,3 +43,29 @@ export const ResretPasswordSchema = yup.object({
         .required('Password is required')
 });
 
+export const jobPostSchema = yup.object().shape({
+    firstName: yup.string().required('First Name is required').max(30, 'First Name must be less than 30 characters'),
+    lastName: yup.string().required('Last Name is required').max(30, 'Last Name must be less than 30 characters'),
+    jobTitle: yup.string().required('Job Title is required').max(50, 'Job Title must be less than 50 characters'),
+    numberOfMembers: yup.number()
+        .positive('Number of Company Members must be positive')
+        .integer('Number of Company Members must be an integer')
+        .required('Number of Company Members is required'),
+    companyPhoneNumber: yup.string()
+        .matches(/^\d+$/, 'Company Phone Number must be numeric')
+        .required('Company Phone Number is required'),
+    maximumPay: yup.number()
+        .positive('Maximum Pay must be positive')
+        .required('Maximum Pay is required'),
+    companyName: yup.string().required('Company Name is required').max(100, 'Company Name must be less than 100 characters'),
+    minimumPay: yup.number()
+        .positive('Minimum Pay must be positive')
+        .required('Minimum Pay is required'),
+    rate: yup.string().required('Rate is required'),
+    jobLocation: yup.string().required('Job Location is required'),
+    jobDescription: yup.string().required('Job Description is required').min(30, 'Job Description must be at least 30 characters'),
+    jobType: yup.string()
+    .required('Job Type is required'),
+    industry: yup.string()
+    .required('Company industry is required')
+});
