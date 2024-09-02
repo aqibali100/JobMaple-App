@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import employerImg from '../../assets/images/employer.png';
 import jobSeekerImg from '../../assets/images/jobseeker.png';
-import './Role.css';
+import '../../assets/style/Role.css';
 
 const RoleSelection = () => {
     const [selectedRole, setSelectedRole] = useState(null);

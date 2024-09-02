@@ -1,5 +1,5 @@
 import React from 'react';
-import './Form.css'
+import '../../assets/style/JobPostForm.css';
 import { jobPostSchema } from '../validation/Validaton';
 import { useFormik } from 'formik';
 const JobPostForm = () => {
