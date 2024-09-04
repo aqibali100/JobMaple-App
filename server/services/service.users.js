@@ -3,6 +3,7 @@ const User = require('../models/model.users');
 const jwt = require('jsonwebtoken');
 const nodemailer = require('nodemailer');
 const crypto = require('crypto');
+const { default: mongoose } = require('mongoose');
 
 //Register User
 const RegisterUser = async (userData) => {
@@ -14,7 +15,7 @@ const RegisterUser = async (userData) => {
     userData.password = hashedPassword;
     const user = new User(userData);
     await user.save();
-    return user;
+    return user._id;
 };
 //Login User
 const LoginUser = async (userData) => {
@@ -87,10 +88,40 @@ const resetPassword = async (user, newPassword) => {
     user.resetPasswordExpires = undefined;
     await user.save();
 };
+//Get single User By Id
+const getUser = async (userId) => {
+    if (!mongoose.Types.ObjectId.isValid(userId)) {
+        throw new Error('Invalid user ID format.');
+    }
+    const user = await User.findById(userId);
+    if (!user) {
+        throw new Error('User not found!');
+    }
+    return user;
+};
+//update user role by userId
+const updateUserRole = async (userId, role) => {
+    try {
+        const user = await User.findByIdAndUpdate(
+            userId,
+            { role },
+            { new: true }
+        );
+        if (!user) {
+            throw new Error('User not found');
+        }
+        return user;
+    } catch (error) {
+        throw new Error(error.message);
+    }
+};
+
 module.exports = {
     RegisterUser,
     LoginUser,
     sendResetPasswordEmail,
     findUserByToken,
     resetPassword,
+    getUser,
+    updateUserRole,
 };

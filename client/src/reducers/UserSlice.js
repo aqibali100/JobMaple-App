@@ -14,7 +14,7 @@ export const registerUser = createAsyncThunk(
   async (userData, thunkAPI) => {
     try {
       const response = await service.createUser(userData);
-      return response.data;
+      return response.data.userId;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.response.data);
     }
@@ -38,7 +38,7 @@ export const sendResetPasswordEmail = createAsyncThunk(
   async (email, { rejectWithValue }) => {
     try {
       const response = await service.sendResetPasswordEmail(email);
-      return response.data; 
+      return response.data;
     } catch (error) {
       const message = error.response?.data?.message || 'Failed to send reset password email';
       return rejectWithValue(message);
@@ -51,13 +51,36 @@ export const resetPassword = createAsyncThunk(
   async ({ token, password }, { rejectWithValue }) => {
     try {
       const response = await service.resetPassword(token, password);
-      return response.data; 
+      return response.data;
     } catch (error) {
       return rejectWithValue(error.response.data.message || 'Failed to reset password');
     }
   }
 );
-
+//update user role by userId
+export const updateUserRole = createAsyncThunk(
+  'user/updateUserRole',
+  async ({ userId, role }, { rejectWithValue }) => {
+    try {
+      const response = await service.updateUserRole(userId, role);
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response ? error.response.data : error.message);
+    }
+  }
+);
+//get user by id
+export const getUserById = createAsyncThunk(
+  'user/getUserById',
+  async (userId, { rejectWithValue }) => {
+    try {
+      const response = await service.getUserById(userId);
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
 const userSlice = createSlice({
   name: 'users',
   initialState,
@@ -111,6 +134,29 @@ const userSlice = createSlice({
         state.message = action.payload;
       })
       .addCase(resetPassword.rejected, (state, action) => {
+        state.status = 'failed';
+        state.error = action.payload;
+      })
+      .addCase(updateUserRole.pending, (state) => {
+        state.status = 'loading';
+      })
+      .addCase(updateUserRole.fulfilled, (state, action) => {
+        state.status = 'succeeded';
+        state.user = action.payload; 
+      })
+      .addCase(updateUserRole.rejected, (state, action) => {
+        state.status = 'failed';
+        state.error = action.payload;
+      })
+      .addCase(getUserById.pending, (state) => {
+        state.status = 'loading';
+        state.error = null;
+      })
+      .addCase(getUserById.fulfilled, (state, action) => {
+        state.status = 'succeeded';
+        state.user = action.payload;
+      })
+      .addCase(getUserById.rejected, (state, action) => {
         state.status = 'failed';
         state.error = action.payload;
       });

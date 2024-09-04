@@ -2,8 +2,13 @@ import React, { useState } from 'react';
 import employerImg from '../../assets/images/employer.png';
 import jobSeekerImg from '../../assets/images/jobseeker.png';
 import '../../assets/style/Role.css';
+import { useDispatch } from 'react-redux';
+import { useParams } from 'react-router-dom';
+import { updateUserRole } from '../../reducers/UserSlice';
 
 const RoleSelection = () => {
+    const { userId } = useParams();
+    const dispatch = useDispatch();
     const [selectedRole, setSelectedRole] = useState(null);
     const handleCheckboxChange = (role) => {
         if (selectedRole === role) {
@@ -13,7 +18,9 @@ const RoleSelection = () => {
         }
     };
     const handleNextClick = () => {
-        console.log('Selected Role:', selectedRole);
+        if (selectedRole) {
+            dispatch(updateUserRole({ userId, role: selectedRole }));
+        }
     };
     const isChecked = (role) => selectedRole === role;
     return (

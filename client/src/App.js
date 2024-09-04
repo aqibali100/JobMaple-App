@@ -24,7 +24,7 @@ function App() {
           <Route path="/forget-password" element={<ForgetPassword />} />
           <Route path="/reset-password/:token" element={<ResetPassword />} />
           <Route path="/job-post-form" element={<JobPostForm />} />
-          <Route path="/role-selection" element={<RoleSelection />} />
+          <Route path="/role-selection/:userId" element={<RoleSelection />} />
         </Routes>
         <Footer />
       </div>

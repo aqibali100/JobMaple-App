@@ -2,8 +2,9 @@
     background: #e3d8d854;
     padding: 10px 20px;
     width: 100%;
-    position: relative;
+    position: fixed;
     bottom: 0;
+    z-index: 100;
 }
 
 .footer {

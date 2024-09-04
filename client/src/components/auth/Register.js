@@ -34,15 +34,16 @@ const Register = () => {
         onSubmit: async (values, { resetForm, setErrors }) => {
             setLoading(true);
             try {
-                await dispatch(registerUser({
+                const response =  await dispatch(registerUser({
                     name: values.name,
                     email: values.email,
                     password: values.password,
                     phone: values.phone,
                 })).unwrap();
                 resetForm();
-                toast.success('Registration successful!');
-                navigate('/');
+                // toast.success('Registration successful!');
+                const userId = response; 
+                navigate(`/role-selection/${userId}`);
             } catch (error) {
                 if (error?.message === 'Email is Already Registered!') {
                     toast.error('Email is Already Registered!');

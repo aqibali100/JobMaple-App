@@ -10,12 +10,14 @@ import { useDispatch } from 'react-redux';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import Loading from '../loading/Loading';
 import { ForgetPasswordSchema } from '../validation/Validaton';
+import { useNavigate } from 'react-router-dom';
 
 
 
 const ForgetPassword = () => {
     const [loading, setLoading] = useState(false);
     const dispatch = useDispatch();
+    const navigate = useNavigate();
     const formik = useFormik({
         initialValues: {
             email: '',
@@ -27,6 +29,7 @@ const ForgetPassword = () => {
                 await dispatch(sendResetPasswordEmail(values)).unwrap();
                 resetForm();
                 toast.success('Email sent successfully!');
+                navigate('/');
             } catch (error) {
                 if (error === 'User with given email does not exist') {
                     toast.error('This Email is not Found!');

@@ -9,7 +9,9 @@ const service = {
   resetPassword: async (token, password) => {
     const data = { password };
     return await axiosInstance.post(`${apiRoutes.user}/reset-password/${token}`, data);
-  }
+  },
+  updateUserRole: async (userId, role, config) => await axiosInstance.patch(`${apiRoutes.user}/update-role/${userId}`, { role }, config),
+  getUserById: async (userId, config) => await axiosInstance.get(`${apiRoutes.user}/${userId}`, config),
 };
 
 export default service;
