@@ -1,15 +1,25 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import employerImg from '../../assets/images/employer.png';
 import jobSeekerImg from '../../assets/images/jobseeker.png';
 import '../../assets/style/Role.css';
-import { useDispatch } from 'react-redux';
-import { useParams } from 'react-router-dom';
-import { updateUserRole } from '../../reducers/UserSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate, useParams } from 'react-router-dom';
+import { getUserById, updateUserRole } from '../../reducers/UserSlice';
+import { toast } from 'react-toastify';
+
 
 const RoleSelection = () => {
     const { userId } = useParams();
     const dispatch = useDispatch();
+    const navigate = useNavigate();
     const [selectedRole, setSelectedRole] = useState(null);
+    const user = useSelector((state) => state.users.user);
+    console.log(user, 'user');
+    useEffect(() => {
+        if (userId) {
+            dispatch(getUserById(userId));
+        }
+    }, [dispatch]);
     const handleCheckboxChange = (role) => {
         if (selectedRole === role) {
             setSelectedRole(null);
@@ -20,6 +30,8 @@ const RoleSelection = () => {
     const handleNextClick = () => {
         if (selectedRole) {
             dispatch(updateUserRole({ userId, role: selectedRole }));
+            toast.success('Registration successful!');
+            navigate('/employer-dashboard');
         }
     };
     const isChecked = (role) => selectedRole === role;
@@ -30,7 +42,7 @@ const RoleSelection = () => {
                     <div className="row">
                         <div className="col-12">
                             <h1 className='role-title'>
-                                Aqib Ali, Your account has been created! What brings you to JobMaple?
+                                {user?.name}, Your account has been created! What brings you to JobMaple?
                             </h1>
                             <p className='text-center mt-3'>
                                 We want to tailor your experience to your needs. Please select your role below:

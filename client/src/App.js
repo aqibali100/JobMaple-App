@@ -10,6 +10,9 @@ import ResetPassword from './components/auth/ResetPassword';
 import JobPostForm from './components/form/JobPostForm';
 import RoleSelection from './components/role/RoleSelection';
 import Footer from './components/layout/Footer';
+import Chating from './screens/chat/Chating';
+import Employer from './screens/employer/Employer';
+import { Profile } from './screens/profile/Profile';
 
 
 function App() {
@@ -25,6 +28,9 @@ function App() {
           <Route path="/reset-password/:token" element={<ResetPassword />} />
           <Route path="/job-post-form" element={<JobPostForm />} />
           <Route path="/role-selection/:userId" element={<RoleSelection />} />
+          <Route path="/chating-dashboard" element={<Chating />} />
+          <Route path="/employer-dashboard" element={<Employer />} />
+          <Route path="/profile" element={<Profile />} />
         </Routes>
         <Footer />
       </div>

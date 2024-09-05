@@ -1,0 +1,221 @@
+.bg-clr {
+    background-color: rgb(43, 107, 226);
+    padding: 10px;
+}
+
+.main-bg {
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    width: 100%;
+    height: 100%;
+    margin: auto;
+    border-radius: 20px;
+    padding: 10px;
+    background: white;
+}
+
+.profile-img img {
+    width: 100%;
+    height: 260px;
+    object-fit: cover;
+    border-radius: 20px;
+}
+
+.content {
+    gap: 20px;
+}
+
+.content strong {
+    font-family: poppins;
+    font-size: 22px;
+    font-weight: 600;
+}
+
+.content span {
+    font-family: poppins;
+    font-size: 18px;
+    font-weight: 400;
+    margin: 0px;
+}
+
+.fav-icon p {
+    font-family: poppins;
+    font-size: 17px;
+    font-weight: 400;
+    margin: 0px;
+}
+
+.product-designer span {
+    color: rgb(43, 107, 226);
+    font-family: poppins;
+    font-size: 18px;
+    font-weight: 500;
+}
+
+.rating-section strong {
+    font-family: poppins;
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.rating p {
+    font-family: poppins;
+    font-size: 18px;
+    font-weight: 500;
+    margin-bottom: 0px;
+}
+
+.rating-star {
+    color: rgb(43, 107, 226);
+}
+
+.dif-clr {
+    color: antiquewhite;
+}
+
+.msg-content-flex p {
+    font-family: poppins;
+    font-size: 17px;
+    font-weight: 500;
+    margin: 0px;
+}
+
+.contact-msg {
+    background-color: rgb(162, 191, 250);
+    padding: 2px 5px;
+    border-radius: 5px;
+    color: rgb(43, 107, 226);
+}
+
+.about-section {
+    border-bottom: 1px solid gray;
+}
+
+.about-section p {
+    font-family: poppins;
+    font-size: 17px;
+    font-weight: 500;
+    margin: 0px;
+    padding: 5px;
+    cursor: pointer;
+}
+
+.about-section p:hover {
+    border-bottom: 3px solid rgb(43, 107, 226);
+}
+
+.new-content p {
+    color: rgb(167, 160, 160);
+    font-family: poppins;
+    font-size: 18px;
+    font-weight: 500;
+    margin: 0px;
+}
+
+.flex-sec h2 {
+    font-family: poppins;
+    font-size: 23px;
+    font-weight: 500;
+}
+
+.flex-sec button {
+    font-family: poppins;
+    font-size: 16px;
+    font-weight: 400;
+    border: none;
+    outline: none;
+    border-radius: 5px;
+    padding: 5px 15px;
+    background: rgb(162, 191, 250);
+    color: rgb(43, 107, 226);
+}
+
+.spotify-info p {
+    font-size: 16px;
+    font-family: poppins;
+    font-weight: 300;
+    color: rgb(167, 160, 160);
+    margin: 0px;
+}
+
+.skill-sec {
+    color: rgb(167, 160, 160);
+    font-family: poppins;
+    font-size: 18px;
+    font-weight: 500;
+    margin: 0px;
+}
+
+.skills ul {
+    padding: 0px;
+}
+
+.skills ul li {
+    list-style: none;
+}
+
+.skills ul li a {
+    text-decoration: none;
+    color: black;
+    font-size: 19px;
+    font-family: poppins;
+    font-weight: 600;
+}
+
+.info-section p {
+    color: rgb(167, 160, 160);
+    font-family: poppins;
+    font-size: 18px;
+    font-weight: 500;
+    margin: 0px;
+}
+
+.edit-sec p {
+    font-size: 17px;
+    font-weight: 500;
+    font-family: poppins;
+    margin: 0px;
+}
+
+.edit-sec span {
+    font-size: 17px;
+    font-weight: 400;
+    font-family: poppins;
+    margin: 0px;
+    color: rgb(43, 107, 226);
+}
+
+.adress-sec p {
+    font-size: 17px;
+    font-weight: 500;
+    font-family: poppins;
+    margin: 0px;
+}
+
+.adress-sec span {
+    font-size: 17px;
+    font-weight: 400;
+    font-family: poppins;
+}
+
+.basic-info p {
+    color: rgb(167, 160, 160);
+    font-family: poppins;
+    font-size: 18px;
+    font-weight: 500;
+    margin: 0px;
+}
+
+@media screen and (max-width: 767px) {
+    .rating {
+        text-align: center;
+    }
+
+    .rating-section {
+        justify-content: center;
+    }
+
+    .product-designer {
+        text-align: center;
+    }
+
+}

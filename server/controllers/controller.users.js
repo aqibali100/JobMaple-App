@@ -67,7 +67,6 @@ const getUserById = async (req, res) => {
     try {
         const userId = req.params.id;
         const user = await getUser(userId);
-
         res.status(200).json({
             message: 'User found successfully!',
             user: user

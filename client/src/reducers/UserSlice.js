@@ -2,7 +2,8 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import service from '../api/ApiRoutes';
 
 const initialState = {
-  user: [],
+  user: null,
+  userId: null,
   status: 'idle',
   error: null,
   successMessage: '',
@@ -153,8 +154,8 @@ const userSlice = createSlice({
         state.error = null;
       })
       .addCase(getUserById.fulfilled, (state, action) => {
-        state.status = 'succeeded';
-        state.user = action.payload;
+        state.user = action.payload.user;
+        state.userId = action.payload.userId;
       })
       .addCase(getUserById.rejected, (state, action) => {
         state.status = 'failed';

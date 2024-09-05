@@ -115,7 +115,6 @@ const updateUserRole = async (userId, role) => {
         throw new Error(error.message);
     }
 };
-
 module.exports = {
     RegisterUser,
     LoginUser,

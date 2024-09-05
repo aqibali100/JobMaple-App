@@ -41,7 +41,6 @@ const Register = () => {
                     phone: values.phone,
                 })).unwrap();
                 resetForm();
-                // toast.success('Registration successful!');
                 const userId = response; 
                 navigate(`/role-selection/${userId}`);
             } catch (error) {
