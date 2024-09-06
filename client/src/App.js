@@ -1,4 +1,4 @@
-import { Route, Routes } from 'react-router-dom';
+import { Route, Routes, useLocation } from 'react-router-dom';
 import './App.css';
 import Login from './components/auth/Login';
 import Register from './components/auth/Register';
@@ -16,10 +16,18 @@ import { Profile } from './screens/profile/Profile';
 
 
 function App() {
+  const location = useLocation();
+  const showNavbarPaths = [
+    '/job-post-form',
+    '/chating-dashboard',
+    '/employer-dashboard',
+    '/profile',
+    '/job-post-form'
+  ];
   return (
     <>
       <div>
-        {/* <Navbar/> */}
+        {showNavbarPaths.includes(location.pathname) && <Navbar />}
         <Routes>
           {/* <Route path="/" element={<Home />} /> */}
           <Route path="/" element={<Login />} />

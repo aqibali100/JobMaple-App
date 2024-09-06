@@ -37,7 +37,7 @@ const Login = () => {
                 await dispatch(loginUser(values)).unwrap();
                 resetForm();
                 toast.success('Login successful!');
-                // navigate('/');
+                navigate('/employer-dashboard');
             } catch (error) {
                 if (error?.message === 'This Email is not Registered!') {
                     toast.error('This Email is not Registered!');
@@ -117,7 +117,7 @@ const Login = () => {
                             </div>
                         </div>
                         <button className='btn' type="submit" disabled={loading}>
-                            {loading ? <Loading/>  : 'Login'}
+                            {loading ? <Loading /> : 'Login'}
                         </button>
                         <div className='account'>
                             Create an account?    <Link to="/register"> Sign Up</Link>
